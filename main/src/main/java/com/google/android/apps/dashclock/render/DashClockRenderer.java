@@ -100,15 +100,20 @@ public abstract class DashClockRenderer {
                         : R.dimen.min_expanded_height);
         boolean isExpanded = (mOptions.minHeightDp
                 >= minExpandedHeight / res.getDisplayMetrics().density);
+        if(mOptions.isHeadless){
+            isExpanded = true;
 
-        // Step 1. Load the root layout
-        vb.loadRootLayout(container, isExpanded
+            vb.loadRootLayout(container, R.layout.widget_main_headless);
+        } else{
+            // Step 1. Load the root layout
+            vb.loadRootLayout(container, isExpanded
                 ? (aggressiveCentering
                         ? R.layout.widget_main_expanded_forced_center
                         : R.layout.widget_main_expanded)
                 : (aggressiveCentering
                         ? R.layout.widget_main_collapsed_forced_center
                         : R.layout.widget_main_collapsed));
+        }
 
         // Step 2. Configure the shade, if it should exist
         vb.setViewBackgroundColor(R.id.shade, shadeColor);
@@ -117,11 +122,13 @@ public abstract class DashClockRenderer {
                         ? View.GONE : View.VISIBLE);
 
         // Step 3. Draw the basic clock face
-        renderClockFace(vb);
-        vb.setImageViewBitmap(R.id.widget_divider,
-                Utils.recolorBitmap(
+        if(!mOptions.isHeadless){
+            renderClockFace(vb);
+            vb.setImageViewBitmap(R.id.widget_divider,
+                    Utils.recolorBitmap(
                         (BitmapDrawable) res.getDrawable(R.drawable.widget_divider),
                         mOptions.foregroundColor));
+        }
 
         // Step 4. Align the clock face and settings button (if shown)
         boolean isPortrait = res.getConfiguration().orientation
@@ -170,7 +177,7 @@ public abstract class DashClockRenderer {
         }
 
         // Settings button
-        if (isExpanded) {
+        if (isExpanded && !mOptions.isHeadless) {
             vb.setViewVisibility(R.id.settings_button, hideSettings ? View.GONE : View.VISIBLE);
             vb.setViewClickIntent(R.id.settings_button,
                     new Intent(mContext, ConfigurationActivity.class)
@@ -184,8 +191,10 @@ public abstract class DashClockRenderer {
 
         // Step 6. Render the extensions (collapsed or expanded)
 
-        vb.setViewVisibility(R.id.widget_divider,
-                (visibleExtensions > 0) ? View.VISIBLE : View.GONE);
+        if(!mOptions.isHeadless){
+            vb.setViewVisibility(R.id.widget_divider,
+                    (visibleExtensions > 0) ? View.VISIBLE : View.GONE);
+        }
 
         if (isExpanded) {
             // Expanded style
@@ -442,6 +451,8 @@ public abstract class DashClockRenderer {
         public int minWidthDp;
         public int minHeightDp;
         public int foregroundColor = AppearanceConfig.DEFAULT_WIDGET_FOREGROUND_COLOR;
+
+        public boolean isHeadless = false;
 
         // Only used by WidgetRenderer
         public int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID; // optional

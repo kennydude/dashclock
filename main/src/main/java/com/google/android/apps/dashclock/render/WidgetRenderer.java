@@ -29,6 +29,7 @@ import android.os.Bundle;
 import android.widget.RemoteViews;
 
 import com.google.android.apps.dashclock.WidgetProvider;
+import com.google.android.apps.dashclock.HeadlessWidgetProvider;
 import com.google.android.apps.dashclock.configuration.AppearanceConfig;
 
 /**
@@ -68,6 +69,11 @@ public class WidgetRenderer extends DashClockRenderer {
                         widgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_HOST_CATEGORY))
                         ? Options.TARGET_LOCK_SCREEN : Options.TARGET_HOME_SCREEN;
             }
+            AppWidgetProviderInfo providerInfo = appWidgetManager.getAppWidgetInfo(appWidgetId);
+            if(providerInfo.provider.getClassName().equals(HeadlessWidgetProvider.class.getName())){
+                options.isHeadless = true;
+            }
+
             options.foregroundColor = AppearanceConfig.getForegroundColor(options.target, context);
 
             renderer.setOptions(options);

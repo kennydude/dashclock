@@ -17,6 +17,7 @@
 <resources>
     <string name="app_name" translatable="false">DashClock Widget</string>
     <string name="widget_label" translatable="false">DashClock</string>
+    <string name="headless_widget_label">DashClock Headless</string>
 
     <string name="status_none" translatable="false">––</string>
 

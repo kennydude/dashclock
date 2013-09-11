@@ -77,6 +77,16 @@
                 android:resource="@xml/widget_info" />
         </receiver>
 
+        <receiver android:name="com.google.android.apps.dashclock.HeadlessWidgetProvider"
+            android:label="@string/headless_widget_label">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/headless_widget_info" />
+        </receiver>
+
         <service
             android:name="com.google.android.apps.dashclock.render.WidgetRemoteViewsFactoryService"
             android:permission="android.permission.BIND_REMOTEVIEWS"
