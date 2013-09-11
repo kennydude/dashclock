@@ -1,2 +1,6 @@
 See http://www.flexlabs.org/2013/06/using-local-aar-android-library-packages-in-gradle-builds
 for using .AARs from your local maven repository.
+
+To build Dashclock run this:
+
+mvn install:install-file -Dfile=drag-sort-listview-0.6.1-SNAPSHOT-AAR.aar -DgroupId=com.mobeta.android.dslv -DartifactId=drag-sort-listview -Dversion=0.6.1-SNAPSHOT-AAR -Dpackaging=aar
