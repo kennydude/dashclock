@@ -89,8 +89,16 @@ public class WidgetRenderer extends DashClockRenderer {
 
     public static void notifyDataSetChanged(Context context) {
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+
+        // Update clock widgets
         int[] appWidgetIds = appWidgetManager.getAppWidgetIds(
                 new ComponentName(context, WidgetProvider.class));
+        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds,
+                R.id.expanded_extensions);
+
+        // Update headless widgets
+        appWidgetIds = appWidgetManager.getAppWidgetIds(
+                new ComponentName(context, HeadlessWidgetProvider.class));
         appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds,
                 R.id.expanded_extensions);
     }
